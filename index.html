@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="application-name" content="Firmo">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Firmo</title>
+<meta name="description" content="Firmo – أدوات زراعية: مساحة البيفوت، تجربة الري، فحص التقاوي، متابعة الإنبات، تجربة الحصاد، فحص البيفوت">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f766e">
+<meta name="msapplication-TileColor" content="#0f766e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Firmo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="polish.css">
+</head>
+<body>
+<script src="gate.js"></script>
+<header>
+<b id="brand" style="cursor:pointer;display:flex;align-items:center;gap:6px" title="About Firmo">
+<img src="img1.png" alt="Firmo" style="width:28px;height:28px;border-radius:6px;vertical-align:middle">
+<span>Firmo</span>
+</b><span id="tool"></span>
+<button class="ib" id="ibtn" hidden aria-label="Install" title="Install">📲</button>
+<button class="ib" id="cbtn" aria-label="Cloud" title="☁️">☁️<i class="dot"></i></button>
+<button class="ib" id="tbtn" aria-label="Theme">🌙</button>
+<button class="ib" id="mbtn" aria-label="Menu" title="Menu">⋯</button>
+<span hidden><button id="bbtn" aria-label="Backup">💾</button><button id="lbtn" aria-label="Language">EN</button></span>
+</header>
+<div id="bstrow"></div>
+<div id="views"></div>
+<div id="menu"><div class="sh"><div class="grab"></div><div class="mt" data-fx="m_title"></div>
+<button class="mi d1" id="mi-exp"><span class="ic">📤</span><span><span data-fx="m_exp"></span><small data-fx="m_exp2"></small></span></button>
+<button class="mi d2" id="mi-imp"><span class="ic">📥</span><span><span data-fx="m_imp"></span><small data-fx="m_imp2"></small></span></button>
+<button class="mi d3" id="mi-all"><span class="ic">💾</span><span><span data-fx="m_all"></span><small data-fx="m_all2"></small></span></button>
+<button class="mi d4" id="mi-cloud"><span class="ic">☁️</span><span><span data-fx="m_cloud"></span><small data-fx="m_cloud2"></small></span></button>
+<button class="mi d5" id="mi-order"><span class="ic">⇅</span><span><span data-fx="m_order"></span><small data-fx="m_order2"></small></span></button>
+<button class="mi d1" id="mi-mapshare"><span class="ic">🗺️</span><span><span data-fx="m_mapshare"></span><small data-fx="m_mapshare2"></small></span></button>
+<button class="mi d3" id="mi-lang"><span class="ic">🌐</span><span><b></b><small data-fx="m_lang2"></small></span></button>
+<button class="mi d4" id="mi-inst"><span class="ic">📲</span><span><span data-fx="m_inst"></span><small data-fx="m_inst2"></small></span></button>
+<button class="mi d5" id="mi-about"><span class="ic">ℹ️</span><span><span data-fx="m_about"></span><small data-fx="m_about2"></small></span></button>
+<button class="hb" id="mi-close" style="width:100%;margin-top:6px" data-fx="m_close"></button>
+</div></div>
+<div id="cloud" class="ov"><div class="bx2">
+<h2 data-fx="c_title"></h2><p data-fx="c_intro"></p>
+<div class="st" id="c-status"></div>
+<label data-fx="c_url"></label><input type="url" id="c-url" dir="ltr" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+<label data-fx="c_key"></label><input type="password" id="c-key" autocomplete="off">
+<label class="chk"><input type="checkbox" id="c-auto"><span data-fx="c_auto"></span></label>
+<div class="rw"><button class="hb pr" id="c-push" data-fx="c_push"></button><button class="hb" id="c-pull" data-fx="c_pull"></button></div>
+<div class="rw"><button class="hb" id="c-save" data-fx="c_save"></button><button class="hb" id="c-close" data-fx="c_close"></button></div>
+<div class="st" id="c-msg"></div>
+<details><summary data-fx="c_how"></summary><ol data-fx="c_steps"></ol><pre id="c-gs"></pre><button class="hb" id="c-copy" style="width:100%;margin-top:8px" data-fx="c_copy"></button></details>
+<details style="margin-top:10px"><summary data-fx="c_onedrive"></summary>
+<p data-fx="c_onedrive_help" style="font-size:13px;line-height:1.7;margin:8px 0"></p>
+<button class="hb pr" id="c-onedrive" style="width:100%;margin-top:6px" data-fx="c_onedrive_btn"></button>
+</details>
+</div></div>
+<div id="mapshare" class="ov"><div class="bx2">
+<h2 data-fx="ms_title"></h2>
+<p data-fx="ms_intro" style="margin-bottom:8px"></p>
+<div class="st" id="ms-status"></div>
+
+<div style="margin-top:12px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-weight:700;color:var(--g);font-size:14px">
+<span data-fx="ms_copy_label"></span>
+</div>
+<pre id="ms-preview" style="background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:12px;font-size:11.5px;direction:ltr;text-align:left;max-height:140px;overflow:auto;white-space:pre-wrap;color:var(--ink);margin:0"></pre>
+<div class="rw" style="margin-top:10px;gap:8px">
+<button class="hb pr" id="ms-copy" style="flex:1" data-fx="ms_copy"></button>
+<button class="hb" id="ms-refresh" style="flex:1" data-fx="ms_refresh"></button>
+</div>
+</div>
+
+<div style="margin-top:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-weight:700;color:var(--g);font-size:14px">
+<span data-fx="ms_paste_label"></span>
+</div>
+<textarea id="ms-ta" rows="5" dir="ltr" placeholder='{"app":"firmo"...}' style="width:100%;font:inherit;font-size:12.5px;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical"></textarea>
+<button class="hb pr" id="ms-paste" style="width:100%;margin-top:10px;padding:12px" data-fx="ms_restore_text"></button>
+</div>
+
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+<button class="hb" id="ms-sharefile" style="width:100%;padding:12px" data-fx="ms_sharefile"></button>
+<button class="hb" id="ms-importfile" style="width:100%;padding:12px" data-fx="ms_importfile"></button>
+<button class="hb" id="ms-wa" style="width:100%;padding:12px;background:#25D366;color:#fff;border:0" data-fx="ms_wa"></button>
+</div>
+
+<input type="file" id="ms-file" accept=".json,application/json,text/plain,.txt" hidden>
+<p data-fx="ms_hint" style="font-size:12.5px;color:var(--mut);margin-top:12px;line-height:1.6"></p>
+<button class="hb" id="ms-close" style="width:100%;margin-top:12px" data-fx="m_close"></button>
+</div></div>
+<div id="toast" role="status"></div>
+<input type="file" id="tf" accept=".json,application/json" hidden>
+<div id="dlg"><div class="bx">
+<h2 data-t="d_title"></h2>
+<p id="info"></p>
+<p id="inst" data-t="d_ios" hidden></p>
+<div class="row">
+<button class="hb" id="bx" data-t="d_save"></button>
+<button class="hb" id="br" data-t="d_restore"></button>
+<button class="hb" id="obtn" data-t="d_order"></button>
+<input type="file" id="bf" accept=".json,application/json" hidden>
+<button class="hb cl" id="bc" data-t="d_close"></button>
+</div>
+<div id="msg"></div>
+</div></div>
+<div id="ord"><div class="bx">
+<h2 data-t="o_title"></h2><p data-t="o_hint"></p>
+<div id="olist"></div>
+<div style="display:flex;gap:8px;margin-top:12px"><button class="hb" id="oreset" data-t="o_reset" style="flex:1"></button><button class="hb" id="odone" data-t="o_done" style="flex:1"></button></div>
+</div></div>
+<div id="about" class="ov" style="z-index:14">
+<div class="bx2" style="max-width:480px">
+<div style="text-align:center;margin-bottom:14px">
+<img id="about-logo" src="img2.webp" alt="Firmo" style="width:140px;height:auto;border-radius:16px;box-shadow:0 3px 12px rgba(0,0,0,.18)">
+</div>
+<h2 id="about-title" style="text-align:center;color:var(--g);margin:0 0 12px;font-size:18px;font-weight:800"></h2>
+<div id="about-body" style="font-size:13.5px;line-height:1.8;color:var(--ink)"></div>
+<button class="hb pr" id="about-close" style="margin-top:16px;width:100%" data-t="d_close"></button>
+</div></div>
+<nav id="tabs" role="tablist">
+<button data-k="pivot" role="tab"><span class="i">📐</span><span class="nl" data-t="t_pivot"></span></button>
+<button data-k="irrig" role="tab"><span class="i">💧</span><span class="nl" data-t="t_irrig"></span></button>
+<button data-k="seed" role="tab"><span class="i">🥔</span><span class="nl" data-t="t_seed"></span></button>
+<button data-k="sprout" role="tab"><span class="i">🌱</span><span class="nl" data-t="t_sprout"></span></button>
+<button data-k="density" role="tab"><span class="i">📏</span><span class="nl" data-t="t_density"></span></button>
+<button data-k="harvest" role="tab"><span class="i">🚜</span><span class="nl" data-t="t_harvest"></span></button>
+<button data-k="inspect" role="tab"><span class="i">🔍</span><span class="nl" data-t="t_inspect"></span></button>
+<button data-k="map" role="tab"><span class="i">🗺️</span><span class="nl" data-t="t_map"></span></button>
+<button data-k="fert" role="tab"><span class="i">🧪</span><span class="nl" data-t="t_fert"></span></button>
+</nav>
+<footer id="cr"><a href="https://wa.me/qr/QIZ446FGUAGGD1?s=v" target="_blank" rel="noopener noreferrer">Designed by Mohamed Ibrahim (Firmino)</a></footer>
+<script src="apps-init.js"></script>
+<script src="tool-pivot.js"></script>
+<script src="tool-irrig.js"></script>
+<script src="tool-seed.js"></script>
+<script src="tool-sprout.js"></script>
+<script src="tool-harvest.js"></script>
+<script src="tool-inspect.js"></script>
+<script src="tool-map.js"></script>
+<script src="tool-fert.js"></script>
+<script src="tool-density.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

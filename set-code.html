@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Firmo – تغيير رمز الدخول</title>
+<style>:root{color-scheme:light dark}body{font-family:Tahoma,Arial,sans-serif;max-width:560px;margin:0 auto;padding:18px;line-height:1.8}h1{color:#0f766e;font-size:21px}
+input,textarea{width:100%;font:inherit;padding:11px;border:2px solid #9bbcb0;border-radius:12px;box-sizing:border-box;direction:ltr}textarea{height:120px;font-size:13px}
+button{font:inherit;font-weight:700;padding:11px 16px;border:0;border-radius:12px;background:#0f766e;color:#fff;margin:8px 6px 0 0;cursor:pointer}button.s{background:#6b7f78}
+ol{padding-inline-start:20px}:focus-visible{outline:3px solid #0f766e;outline-offset:2px}</style></head><body>
+<script>window.FA_NOGATE=true</script><script src="gate.js"></script>
+<h1>تغيير رمز الدخول إلى Firmo</h1>
+<label for="c">الرمز الجديد (4 أحرف أو أكثر)</label><input id="c" autocomplete="off" spellcheck="false">
+<button id="g" type="button">إنشاء محتوى access.json</button><button class="s" id="o" type="button">إلغاء الرمز (دخول مفتوح)</button>
+<p>انسخ هذا النص:</p><textarea id="t" readonly></textarea><button id="cp" type="button">نسخ</button>
+<ol><li>افتح مستودعك على GitHub ← الملف <b>access.json</b>.</li><li>اضغط أيقونة القلم (Edit) وامسح المحتوى والصق النص الجديد.</li><li>اضغط <b>Commit changes</b>. خلال دقائق يُطلب الرمز الجديد من كل الأجهزة عند اتصالها بالإنترنت.</li></ol>
+<script>const $=id=>document.getElementById(id);
+function out(h,s){$('t').value=JSON.stringify({salt:s,hash:h},null,1)}
+$('g').onclick=()=>{const c=$('c').value.trim();if(c.length<4){alert('الرمز قصير: 4 أحرف على الأقل');return}
+ const a=new Uint8Array(12);crypto.getRandomValues(a);const s=[...a].map(x=>x.toString(16).padStart(2,'0')).join('');out(FA.mk(c,s),s)};
+$('o').onclick=()=>{$('t').value=JSON.stringify({salt:'',hash:''},null,1)};
+$('cp').onclick=async()=>{try{await navigator.clipboard.writeText($('t').value)}catch(e){$('t').select();document.execCommand('copy')}};</script></body></html>
