@@ -1,4 +1,11 @@
 {
- "salt": "021b81d9a5b114f9",
- "hash": "3b571a18e2b530511d03333b9fd97381c03794675a9746ed4de02ff3003449e3"
+ "pub": {
+  "kty": "EC",
+  "crv": "P-256",
+  "x": "bekrcSWvr8s3XRQ3o9e-B8FHVHNpHPldtHvlYRugZig",
+  "y": "UBys9wzmFnJgQgD_pWMSLhZ6O65kQpKTBmykBLNvXFc"
+ },
+ "wa": "201063506401",
+ "ntfy": "firmo-d44442f12b87a520",
+ "revoked": []
 }
