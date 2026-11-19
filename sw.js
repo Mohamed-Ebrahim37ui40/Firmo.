@@ -1,0 +1,4 @@
+const V='firmo-0f6022ca',F=["./", "app.css", "app.js", "apple-touch-icon.png", "apps-init.js", "favicon-32.png", "favicon-64.png", "gate.js", "i18n.js", "icon-192.png", "icon-512.png", "img1.png", "img2.webp", "index.html", "manifest.webmanifest", "polish.css", "tool-density.js", "tool-fert.js", "tool-harvest.js", "tool-inspect.js", "tool-irrig.js", "tool-map.js", "tool-pivot.js", "tool-seed.js", "tool-sprout.js"];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(F)).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;if(/\/access\.json$/.test(new URL(e.request.url).pathname)){e.respondWith(fetch(e.request,{cache:'no-store'}));return}e.respondWith(caches.match(e.request,{ignoreSearch:true}).then(r=>r||fetch(e.request)))});

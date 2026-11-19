@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Firmo – لوحة المالك</title>
+<style>:root{color-scheme:light dark}body{font-family:Tahoma,Arial,sans-serif;max-width:600px;margin:0 auto;padding:14px;line-height:1.8}h1{color:#0f766e;font-size:21px}h2{font-size:17px;margin:0 0 6px;color:#0f766e}
+.c{border:1px solid #9bbcb066;border-radius:14px;padding:12px;margin:12px 0}input,textarea{width:100%;font:inherit;padding:10px;border:2px solid #9bbcb0;border-radius:10px;box-sizing:border-box;margin:4px 0}textarea{height:110px;font-size:12px;direction:ltr}
+button{font:inherit;font-weight:700;padding:10px 14px;border:0;border-radius:10px;background:#0f766e;color:#fff;margin:6px 6px 0 0;cursor:pointer}button.s{background:#6b7f78}button.w{background:#16a34a}
+.m{font-size:14px;color:#0f766e;font-weight:700;min-height:20px}:focus-visible{outline:3px solid #0f766e;outline-offset:2px}</style></head><body>
+<script>window.FA_NOGATE=true</script><script src="gate.js"></script>
+<h1>لوحة المالك – Firmo</h1>
+
+<div class="c" id="ap" style="display:none"><h2>طلب موافقة جديد</h2>
+<div>الاسم: <b id="an"></b></div><div>الجوال: <b id="ap2" dir="ltr"></b></div><div>رقم الطلب: <b id="ai" dir="ltr"></b></div>
+<button id="ok" type="button">✅ موافقة</button><div id="ar" style="display:none"><p class="m">تمت الموافقة. أرسل الرابط للمستخدم:</p><textarea id="al" readonly></textarea>
+<button class="w" id="aw" type="button">إرسال عبر واتساب</button><button class="s" id="ac" type="button">نسخ الرابط</button></div></div>
+
+<div class="c"><h2>1) إعداد المالك (مرة واحدة)</h2>
+<label>رقم واتساب الخاص بك (يصلك عليه الطلب)</label><input id="wa" type="tel" placeholder="01xxxxxxxxx">
+<button id="kg" type="button">إنشاء / عرض محتوى access.json</button>
+<p class="m" id="km"></p><textarea id="kt" readonly></textarea><button class="s" id="kc" type="button">نسخ</button>
+<p>الصق هذا النص في الملف <b>access.json</b> على GitHub (Edit ثم Commit changes). لو ظهر لك إشعار فوري عبر تطبيق <b>ntfy</b> فاشترك في الموضوع المكتوب في الحقل <b>ntfy</b> بالنص.</p></div>
+
+<div class="c"><h2>2) تفعيل جهازي كمالك</h2><p>بعد تحديث access.json اضغط ليدخل هذا الجهاز بدون طلب.</p><button id="me" type="button">فتح التطبيق كمالك</button></div>
+
+<div class="c"><h2>3) موافقة يدوية</h2><input id="mi" placeholder="رقم الطلب" dir="ltr"><input id="mp" type="tel" placeholder="جوال المستخدم (اختياري)"><button id="mb" type="button">موافقة</button></div>
+
+<div class="c"><h2>4) إيقاف جهاز</h2><input id="ri" placeholder="رقم الطلب المراد إيقافه" dir="ltr"><button class="s" id="rb" type="button">إنشاء access.json محدّث</button><textarea id="rt" readonly></textarea></div>
+
+<div class="c"><h2>5) نسخة احتياطية للمفتاح السري</h2><p>احتفظ به في مكان آمن. من يملكه يستطيع الموافقة باسمك. بدونه لن تستطيع الموافقة من جهاز آخر.</p>
+<textarea id="bk"></textarea><button class="s" id="bs" type="button">عرض المفتاح</button><button class="s" id="br" type="button">استعادة من النص</button></div>
+
+<script>const $=id=>document.getElementById(id),PK='firmo_owner_priv',E={name:'ECDSA',namedCurve:'P-256'};
+const priv=()=>{try{return JSON.parse(localStorage.getItem(PK)||'null')}catch(e){return null}};
+const base=()=>location.href.split('#')[0].replace(/[^/]*$/,'');
+async function ensureKey(){let k=priv();if(k)return k;const p=await crypto.subtle.generateKey(E,true,['sign','verify']);k=await crypto.subtle.exportKey('jwk',p.privateKey);localStorage.setItem(PK,JSON.stringify(k));return k}
+async function sign(id){const k=await crypto.subtle.importKey('jwk',priv(),E,false,['sign']);return FA.b64(new Uint8Array(await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},k,new TextEncoder().encode(id))))}
+const copy=async t=>{try{await navigator.clipboard.writeText(t)}catch(e){}};
+$('kg').onclick=async()=>{const w=FA.norm($('wa').value);if(w.length<9){$('km').textContent='اكتب رقم واتساب صحيحًا';return}
+ const k=await ensureKey(),old=localStorage.getItem('firmo_topic')||'firmo-'+FA.rnd(8);localStorage.setItem('firmo_topic',old);
+ $('kt').value=JSON.stringify({pub:{kty:'EC',crv:'P-256',x:k.x,y:k.y},wa:w,ntfy:old,revoked:[]},null,1);$('km').textContent='جاهز: الصقه في access.json'};
+$('kc').onclick=()=>{$('kt').select();copy($('kt').value)};
+$('me').onclick=async()=>{if(!priv()){alert('أنشئ المفاتيح أولًا (الخطوة 1)');return}const id=FA.devId();localStorage.setItem('firmo_access',JSON.stringify({id,token:await sign(id)}));location.href='index.html'};
+let cur=null;
+async function showApprove(id,n,p){if(!priv()){alert('أنشئ المفاتيح أولًا (الخطوة 1) على هذا الجهاز');return}cur={id,n,p};$('ap').style.display='';$('an').textContent=n||'—';$('ap2').textContent=p||'—';$('ai').textContent=id}
+$('ok').onclick=async()=>{const t=await sign(cur.id),link=base()+'index.html#ok='+t+'&id='+cur.id;$('al').value=link;$('ar').style.display='';cur.link=link};
+$('aw').onclick=()=>{const ph=FA.norm(cur.p||'');window.open('https://wa.me/'+ph+'?text='+encodeURIComponent('تمت الموافقة على استخدامك Firmo. افتح الرابط للدخول:\n'+cur.link),'_blank')};
+$('ac').onclick=()=>{$('al').select();copy($('al').value)};
+$('mb').onclick=()=>{const i=$('mi').value.trim();if(!/^\w{8,}$/.test(i)){alert('رقم الطلب غير صحيح');return}showApprove(i,'',$('mp').value)};
+$('rb').onclick=async()=>{const i=$('ri').value.trim();if(!i)return;let c={};try{c=await (await fetch('access.json?t='+Date.now(),{cache:'no-store'})).json()}catch(e){alert('تعذر قراءة access.json');return}
+ c.revoked=[...new Set([...(c.revoked||[]),i])];$('rt').value=JSON.stringify(c,null,1)};
+$('bs').onclick=()=>{$('bk').value=localStorage.getItem(PK)||'لا يوجد مفتاح بعد'};
+$('br').onclick=()=>{try{const k=JSON.parse($('bk').value);if(!k.d||!k.x)throw 0;localStorage.setItem(PK,JSON.stringify(k));alert('تمت الاستعادة')}catch(e){alert('النص غير صحيح')}};
+(function(){const m=location.hash.match(/req=(\w+)/);if(m){const n=(location.hash.match(/[#&]n=([^&]*)/)||[])[1],p=(location.hash.match(/[#&]p=([^&]*)/)||[])[1];
+ showApprove(m[1],n?decodeURIComponent(n):'',p?decodeURIComponent(p):'')}})();</script></body></html>
